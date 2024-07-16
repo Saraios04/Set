@@ -2,46 +2,68 @@
 //  AspectVGrid.swift
 //  Memorize
 //
-//  Created by seemakus on 6/20/24.
+//  Created by CS193p Instructor on 4/14/21.
+//  Copyright Stanford University 2021
 //
 
 import SwiftUI
 
-struct AspectVGrid<Item: Identifiable,ItemView: View>: View {
+struct AspectVGrid<Item, ItemView>: View where ItemView: View, Item: Identifiable {
     var items: [Item]
-    let aspectRatio: CGFloat
-    let content : (Item) -> ItemView
+    var aspectRatio: CGFloat
+    var content: (Item) -> ItemView
+    var minWidth: CGFloat
+    
+    init(items: [Item], aspectRatio: CGFloat, minWidth: CGFloat = 0, @ViewBuilder content: @escaping (Item) -> ItemView) {
+        self.items = items
+        self.aspectRatio = aspectRatio
+        self.content = content
+        self.minWidth = minWidth
+    }
     
     var body: some View {
-        GeometryReader { geometry in
-            let gridItemSize = gridItemWidthThatFits(count: items.count , size: geometry.size,atAspectRatio: aspectRatio)
-            
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: gridItemSize),spacing: 0)],spacing: 0) {
-                ForEach(items){ item in
-                    content(item)
-                    
+        VStack {
+            GeometryReader { geometry in
+                let calcWidth: CGFloat = widthThatFits(itemCount: items.count, in: geometry.size, itemAspectRatio: aspectRatio)
+                let width: CGFloat = max(minWidth, calcWidth)
+                
+                LazyVGrid(columns: [adaptiveGridItem(width: width)], spacing: 0) {
+                    ForEach(items) { item in
+                        content(item).aspectRatio(aspectRatio, contentMode: .fit)
+                    }
                 }
+                Spacer(minLength: 0)
+                
             }
         }
     }
-    private func gridItemWidthThatFits(
-        count: Int,
-        size: CGSize,
-        atAspectRatio aspectRatio: CGFloat
-    ) -> CGFloat {
-        let count = CGFloat(count)
-        var columnCount = 1.0
-        repeat {
-            let width = size.width / columnCount
-            let height = width / aspectRatio
-            
-            let rowCount = (count / columnCount).rounded(.up)
-            if rowCount * height < size.height {
-                return (size.width / columnCount).rounded(.down)
-            }
-            columnCount += 1
-        } while columnCount < count
-        return min(size.width / count, size.height * aspectRatio).rounded(.down)
+    
+    private func adaptiveGridItem(width: CGFloat) -> GridItem {
+        var gridItem = GridItem(.adaptive(minimum: width))
+        gridItem.spacing = 0
+        return gridItem
     }
     
+    private func widthThatFits(itemCount: Int, in size: CGSize, itemAspectRatio: CGFloat) -> CGFloat {
+        var columnCount = 1
+        var rowCount = itemCount
+        repeat {
+            let itemWidth = size.width / CGFloat(columnCount)
+            let itemHeight = itemWidth / itemAspectRatio
+            if  CGFloat(rowCount) * itemHeight < size.height {
+                break
+            }
+            columnCount += 1
+            rowCount = (itemCount + (columnCount - 1)) / columnCount
+        } while columnCount < itemCount
+        if columnCount > itemCount {
+            columnCount = itemCount
+        }
+        return floor(size.width / CGFloat(columnCount))
+    }
 }
+//dynamically drawing
+//grids
+//networking- urlsession, threading,lottie animations
+//data persistance
+

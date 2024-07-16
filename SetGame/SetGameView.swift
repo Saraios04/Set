@@ -8,62 +8,79 @@
 import SwiftUI
 
 struct SetGameView: View {
+    @ObservedObject var setGameVM : SetGameViewModel
     
     var body: some View {
-        GeometryReader { geometry in
-            SetCard(card: SetGameModel.Card(numbers: .three, shape: .rectangle, shading: .solid, color: .red))
-        }
-        
-    }
+        VStack{
+            deck
+            Spacer()
 
-    struct  SetCard: View {
-        let card : SetGameModel.Card
-        init(card: SetGameModel.Card) {
-            self.card = card
+            HStack {
+                Button("+3 cards") {
+                    setGameVM.addThreeMoreCards()
+                }.disabled(setGameVM.setModel.deck.isEmpty)
+                .buttonBorderShape(.roundedRectangle(radius: 12))
+                
+                Spacer(minLength: 5)
+                
+                Text("Score: \(setGameVM.getScore())")
+                
+                Spacer(minLength: 5)
+                
+                Button("New Game") {
+                    setGameVM.newGame()
+                }
+                .buttonBorderShape(.roundedRectangle(radius: 12))
+            }
+            .padding()
+
         }
+    }
+    
+//    var customDeck : some View {
+//      
+//        LazyVGrid(columns: [GridItem(.flexible(),spacing: 0),GridItem(.flexible(),spacing: 0),GridItem(.flexible(),spacing: 0)],spacing: 20){
+//            ForEach(setGameVM.setModel.deck){card  in
+//                SetCard(card: SetGameModel.Card(numbers: card.numbers, shape: card.shape, shading: card.shading, color: card.color, id: card.id))
+//                    .frame(height: 250)
+//                    .onTapGesture {
+//                        setGameVM.chooseCard(card: card)
+//                    }
+//            }
+//        }
+//        
+//        
+//    }
+    
+    var deck: some View {
+        AspectVGrid(items: setGameVM.setModel.deck, aspectRatio: 3/5, minWidth: 35) {  card in
+            SetCard(card: card)
+                .onTapGesture {
+                    setGameVM.chooseCard(card: card)
+                }
+            
+        }
+    }
+    
+    struct SetCard: View {
+        let card : SetGameModel.Card
         
         var body : some View {
             GeometryReader { geometry in
-                card.shape.shapeView(size: geometry.size, cardShade: card.shading, cardColor: card.color, cardNumber: card.numbers.rawValue)
+                card.shape.shapeView(size: geometry.size, cardShade: card.shading, cardColor: card.color, cardNumber: card.numbers.rawValue, isMatched: card.isMatched ?? false)
+                    .cardify(isSelected: card.isSelected ?? false, isMatched: card.isMatched ?? false)
+                    .padding(EdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4))
+                    .opacity(card.isMatched ?? false ? 0 : 1 )
             }
         }
     }
-    
 }
-
 
 
 
 #Preview {
-    SetGameView()
+    SetGameView(setGameVM: SetGameViewModel())
+
 }
 
-//    func Diamond(size: CGSize, isOpen: Bool, isSolid: Bool, color: Color) -> some View {
-//        return DiamondShape()
-//            .foregroundColor(isSolid ? color : .clear)
-//            .overlay(DiamondShape()
-//                .stroke(color, lineWidth : isOpen ? 10 : 0))
-//            .frame(width: size.width * (0.5) , height: size.height * (0.25),alignment: .center)
-//
-//
-//
-//    }
-//    func ovalShape(size: CGSize, isOpen: Bool, isSolid: Bool, color: Color)-> some View {
-//        return Capsule(style: .continuous)
-//            .foregroundColor(isSolid ? color : .clear)
-//            .overlay(Capsule()
-//                .strokeBorder(color, lineWidth : isOpen ? 10 : 0))
-//            .frame(width: (size.width/(1.5)) ,height: (size.height)/8)
-//
-//    }
-//
-//    func rectShape(size: CGSize, isOpen: Bool, isSolid: Bool) -> some View {
-//        Rectangle()
-//            .foregroundColor(isSolid ? .red : .clear) // Fill color if isSolid is true
-//            .overlay(
-//                Rectangle()
-//                    .strokeBorder(Color.red, lineWidth: isOpen ? 10 : 0)
-//            )
-//            .frame(width: size.width / 2, height: size.height / 6)
-//    }
-//
+

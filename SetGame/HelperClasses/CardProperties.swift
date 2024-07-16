@@ -13,7 +13,7 @@ enum CardShape: CaseIterable{
         case oval
         case diamond
     
-    func shapeView(size: CGSize,cardShade: CardShade, cardColor: CardColor, cardNumber: Int) ->  some View {
+    func shapeView(size: CGSize,cardShade: CardShade, cardColor: CardColor, cardNumber: Int,isMatched: Bool) ->  some View {
         switch self {
         case .rectangle:
               let frameSize = CGSize(width: size.width / 2, height: size.height / 6)
@@ -23,7 +23,7 @@ enum CardShape: CaseIterable{
             return AnyView(Capsule().makeSetCard(size: size, cardShade: cardShade, cardColor:cardColor.color, cardNumber: cardNumber,frameSize: frameSize))
         case .diamond:
            
-            let frameSize = CGSize(width: size.width * (0.5),height: size.height * (0.25))
+            let frameSize = CGSize(width: size.width * (0.25),height: size.height * (0.25))
             return AnyView(DiamondShape().makeSetCard(size: size, cardShade: cardShade, cardColor:cardColor.color, cardNumber: cardNumber,frameSize: frameSize))
         }
     }
@@ -53,16 +53,6 @@ enum CardNumber: Int,CaseIterable{
         case one = 1
         case two
         case three
-//    var number: Int {
-//        switch self {
-//        case .one:
-//            return 1
-//        case .two:
-//            return 2
-//        case .three:
-//            return 3
-//        }
-//    }
     }
 
 extension Shape {
@@ -70,20 +60,21 @@ extension Shape {
         let base = self.frame(width: frameSize.width, height: frameSize.height,alignment: .center)
         switch cardShade {
         case .solid:
-            return  AnyView(base
+            return AnyView(base
                 .foregroundColor(cardColor)
-                .cardConstructer(numberOfShapes: cardNumber)
-                .cardify())
-        case .open:
-            return AnyView(self.stroke(cardColor,lineWidth: 10)
-                .frame(width: size.width / 2, height: size.height / 6)
-                .cardConstructer(numberOfShapes: cardNumber)
-                 .cardify())
+                .cardConstructer(numberOfShapes: cardNumber))
+                //.cardify(isSelected: false, isMatched: false))
+               
            
         case .stripes:
             return AnyView(base.foregroundColor(cardColor).opacity(0.5)
-                .cardConstructer(numberOfShapes: cardNumber)
-                .cardify())
+                .cardConstructer(numberOfShapes: cardNumber))
+               // .cardify(isSelected: false, isMatched: false))
+       
+        case .open:
+            return AnyView(self.stroke(cardColor,lineWidth: 5)
+                .frame(width: size.width / 2, height: size.height / 6)
+                .cardConstructer(numberOfShapes: cardNumber))
         }
         
     }

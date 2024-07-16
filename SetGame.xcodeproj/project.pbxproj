@@ -20,6 +20,7 @@
 		052F3FA32C34BB180057785B /* CardProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052F3FA22C34BB180057785B /* CardProperties.swift */; };
 		052F3FA52C34BF850057785B /* CardConstructer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052F3FA42C34BF850057785B /* CardConstructer.swift */; };
 		052F3FA72C35F6790057785B /* AspectVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052F3FA62C35F6790057785B /* AspectVGrid.swift */; };
+		05CBD15B2C38A0E40014B8B3 /* SetGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CBD15A2C38A0E40014B8B3 /* SetGameViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		052F3FA22C34BB180057785B /* CardProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardProperties.swift; sourceTree = "<group>"; };
 		052F3FA42C34BF850057785B /* CardConstructer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardConstructer.swift; sourceTree = "<group>"; };
 		052F3FA62C35F6790057785B /* AspectVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectVGrid.swift; sourceTree = "<group>"; };
+		05CBD15A2C38A0E40014B8B3 /* SetGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGameViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +111,7 @@
 				051F428B2C2E15A5005A30A5 /* SetGameApp.swift */,
 				051F428D2C2E15A5005A30A5 /* SetGameView.swift */,
 				052F3FA02C34B3290057785B /* SetGameModel.swift */,
+				05CBD15A2C38A0E40014B8B3 /* SetGameViewModel.swift */,
 				051F42912C2E15A6005A30A5 /* Preview Content */,
 				051F428F2C2E15A6005A30A5 /* Assets.xcassets */,
 				052F3FAC2C374B3B0057785B /* ViewModifier */,
@@ -302,6 +305,7 @@
 				052F3FA72C35F6790057785B /* AspectVGrid.swift in Sources */,
 				051F42B62C2E203E005A30A5 /* DiamondShape.swift in Sources */,
 				052F3FA12C34B3290057785B /* SetGameModel.swift in Sources */,
+				05CBD15B2C38A0E40014B8B3 /* SetGameViewModel.swift in Sources */,
 				051F428E2C2E15A5005A30A5 /* SetGameView.swift in Sources */,
 				052F3F912C349EFB0057785B /* Cardify.swift in Sources */,
 				052F3FA32C34BB180057785B /* CardProperties.swift in Sources */,

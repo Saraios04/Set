@@ -9,7 +9,7 @@ import SwiftUI
 struct CardConstructer: ViewModifier {
     let numberOfShapes: Int
     func body(content: Content) -> some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 10) {
             ForEach(0..<numberOfShapes, id: \.self) { _ in
                 content
             }
